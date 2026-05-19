@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="MedPenguim — Plataforma de estudos para acadêmicos de Medicina. Flashcards inteligentes, banco de questões comentadas e resumos estratégicos por semestre.">
+
+    <!-- Open Graph / Social Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://medpenguim.com.br/">
+    <meta property="og:title" content="MedPenguim - Preparação Médica de Elite">
+    <meta property="og:description"
+        content="Acelere seu aprendizado com flashcards inteligentes, banco de questões comentadas e resumos estratégicos feitos para o seu semestre.">
+    <meta property="og:image" content="https://medpenguim.com.br/app/img/logo-medpenguim.jpg">
+
+    <title>MedPenguim - Preparação Médica de Elite</title>
+    <link rel="icon" type="image/png" href="app/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://lnjvmkicgrhdzbrtbtnc.supabase.co">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .cute-penguin {
+            overflow: visible;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover .cute-penguin {
+            transform: scale(1.1) rotate(5deg);
+        }
+        .flipper-right.flipper-wave {
+            transform-origin: 80px 55px;
+        }
+        .logo:hover .cute-penguin .flipper-wave {
+            animation: wave 0.8s infinite alternate ease-in-out;
+        }
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-40deg) translate(-5px, -15px); }
+        }
+        .eyes {
+            transform-origin: center 42px;
+            animation: blink 4s infinite;
+        }
+        @keyframes blink {
+            0%, 96%, 98%, 100% { transform: scaleY(1); }
+            97%, 99% { transform: scaleY(0.1); }
+        }
+
+        /* New 4-Card Pricing Grid */
+        .pricing-grid-four {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .pricing-card-mini {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        .pricing-card-mini:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .pricing-card-mini.featured {
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+            transform: scale(1.05);
+            z-index: 2;
+        }
+        .p-card-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        .p-card-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 15px;
+        }
+        .p-card-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 10px;
+        }
+        .p-card-price span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .p-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .free-plan-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        .free-plan-footer p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .free-plan-footer a {
+            color: var(--primary-hover);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        /* --- HERO VIDEO BACKGROUND — CINEMATIC EDITION --- */
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=Cabin:wght@500;600&display=swap');
+
+        /* ── Entrance Animations ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(1); }
+            50%      { opacity: 0.75; transform: translateX(-50%) scale(1.05); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-12px); }
+        }
+        @keyframes particleDrift {
+            0%   { transform: translateY(0) translateX(0); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        /* ── Section Container ── */
+        .hero-video-section {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: #000000;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Background Video ── */
+        .hero-bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 130%;
+            height: 130%;
+            transform: translate(-50%, -42%);
+            object-fit: cover;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        /* ── Dark Vignette over Video ── */
+        .hero-video-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at center 45%, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.8) 100%),
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 15%, transparent 35%, transparent 55%, rgba(0,0,0,0.85) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Floating Particles (Pure CSS) ── */
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .hero-particles span {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(180, 220, 255, 0.7);
+            border-radius: 50%;
+            animation: particleDrift linear infinite;
+        }
+
+        /* ── Blur Overlay (Pulsing) ── */
+        .hero-blur-overlay {
+            position: absolute;
+            top: 280px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 900px;
+            height: 420px;
+            border-radius: 9999px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+            filter: blur(80px);
+            z-index: 1;
+            pointer-events: none;
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+
+        /* ── Navbar ── */
+        .hero-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            max-width: 100%;
+            width: 100%;
+            padding: 0 120px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            animation: fadeInUp 0.6s ease-out both;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .hero-navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        .hero-nav-links {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .hero-nav-links a {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 22px;
+            color: rgba(255,255,255,0.95);
+            padding: 6px 14px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+        .hero-nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.12);
+        }
+        .hero-navbar-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .btn-signin {
+            background: rgba(255,255,255,0.95);
+            color: #171717;
+            padding: 9px 20px;
+            border-radius: 10px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 22px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        }
+        .btn-signin:hover {
+            background: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .btn-get-started {
+            background: #00b8d4;
+            color: #fff;
+            padding: 9px 20px;
+            border-radius: 10px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 22px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 184, 212, 0.35);
+            transition: all 0.25s ease;
+        }
+        .btn-get-started:hover {
+            background: #00acc1;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(0, 184, 212, 0.5);
+        }
+
+        /* ── Hero Content ── */
+        .hero-center-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 900px;
+            margin: 150px auto 0;
+            padding: 0 24px;
+            gap: 32px;
+        }
+        .hero-heading-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+        }
+
+        /* Badge with shimmer */
+        .badge-premium {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            align-self: center;
+            background: rgba(0, 184, 212, 0.15);
+            color: #67e8f9;
+            padding: 10px 28px;
+            border-radius: 100px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(0, 184, 212, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        }
+        .badge-premium::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        /* Headings */
+        .hero-heading-line1 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: clamp(42px, 6.5vw, 80px);
+            color: #ffffff;
+            letter-spacing: -3px;
+            line-height: 1.08;
+            margin: 0;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7), 0 8px 40px rgba(0,0,0,0.4);
+            animation: fadeInUp 0.9s ease-out 0.35s both;
+        }
+        .hero-heading-line2 {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(44px, 7vw, 82px);
+            color: #67e8f9;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin: 0;
+            text-shadow: 0 0 40px rgba(0, 184, 212, 0.35), 0 2px 8px rgba(0,0,0,0.5);
+            animation: fadeInUp 0.9s ease-out 0.5s both;
+        }
+        .hero-subtitle {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 28px;
+            color: rgba(246, 247, 249, 0.9);
+            max-width: 580px;
+            margin: 8px auto 0;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+            animation: fadeInUp 0.9s ease-out 0.65s both;
+        }
+
+        /* ── CTA Buttons ── */
+        .hero-cta-row {
+            display: flex;
+            flex-direction: row;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.9s ease-out 0.8s both;
+        }
+        .btn-cta-primary {
+            background: linear-gradient(135deg, #00b8d4 0%, #00e5ff 100%);
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 184, 212, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-cta-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+        .btn-cta-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 48px rgba(0, 184, 212, 0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+        }
+        .btn-cta-primary:hover::before { opacity: 1; }
+
+        .btn-cta-secondary {
+            background: rgba(0, 20, 40, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.35s ease;
+        }
+        .btn-cta-secondary:hover {
+            background: rgba(0, 30, 60, 0.8);
+            border-color: rgba(103, 232, 249, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* ── Social Proof Strip ── */
+        .hero-social-proof {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            animation: fadeInUp 0.9s ease-out 1s both;
+            margin-top: 8px;
+        }
+        .avatar-stack {
+            display: flex;
+        }
+        .avatar-stack span {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            margin-left: -10px;
+        }
+        .avatar-stack span:first-child { margin-left: 0; background: linear-gradient(135deg, #0891b2, #22d3ee); }
+        .avatar-stack span:nth-child(2) { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+        .avatar-stack span:nth-child(3) { background: linear-gradient(135deg, #10b981, #34d399); }
+        .avatar-stack span:nth-child(4) { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+        .social-proof-text {
+            font-family: 'Manrope', sans-serif;
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+        }
+        .social-proof-text strong {
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* ── Dashboard Image ── */
+        .hero-dashboard-wrap {
+            position: relative;
+            z-index: 2;
+            width: 1163px;
+            max-width: 90vw;
+            margin: 70px auto 0;
+            padding-bottom: 40px;
+            animation: fadeInScale 1s ease-out 1.1s both;
+        }
+        .hero-dashboard-outer {
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 16px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+            transition: all 0.4s ease;
+        }
+        .hero-dashboard-outer:hover {
+            border-color: rgba(0, 184, 212, 0.2);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 60px rgba(0, 184, 212, 0.08);
+        }
+        .hero-dashboard-outer img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ── Navbar override ── */
+        nav {
+            background: transparent !important;
+            backdrop-filter: none;
+            border-bottom: none;
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .hero-navbar { padding: 12px 20px; height: auto; }
+            .hero-navbar-left { gap: 16px; }
+            .hero-nav-links { display: none; }
+            .hero-center-content { margin-top: 90px; gap: 24px; }
+            .hero-blur-overlay { width: 90vw; max-width: 350px; height: 200px; top: 200px; }
+            .hero-cta-row { flex-direction: column; gap: 12px; width: 100%; }
+            .btn-cta-primary, .btn-cta-secondary { width: 100%; text-align: center; justify-content: center; }
+            .hero-social-proof { flex-direction: column; text-align: center; }
+        }
+
+        @media (max-width: 500px) {
+            .hero-navbar { padding: 10px 12px; }
+            .logo-text { display: none; } /* Hide 'Med Penguim' text to save space */
+            .hero-navbar-left { gap: 8px; }
+            .hero-navbar-right { gap: 8px; }
+            .btn-signin, .btn-get-started { padding: 8px 12px; font-size: 13px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section with Video Background — Cinematic -->
+    <section class="hero-video-section">
+        <!-- Background Video -->
+        <video class="hero-bg-video" autoplay loop muted playsinline>
+            <source src="app/img/globo-azul-bg.mp4" type="video/mp4">
+        </video>
+
+        <!-- Floating Particles -->
+        <div class="hero-particles">
+            <span style="left:5%;bottom:0;animation-duration:12s;animation-delay:0s"></span>
+            <span style="left:12%;bottom:0;animation-duration:16s;animation-delay:2s"></span>
+            <span style="left:22%;bottom:0;animation-duration:14s;animation-delay:4s"></span>
+            <span style="left:30%;bottom:0;animation-duration:18s;animation-delay:1s"></span>
+            <span style="left:38%;bottom:0;animation-duration:11s;animation-delay:3s"></span>
+            <span style="left:45%;bottom:0;animation-duration:15s;animation-delay:5s"></span>
+            <span style="left:52%;bottom:0;animation-duration:13s;animation-delay:0.5s"></span>
+            <span style="left:60%;bottom:0;animation-duration:17s;animation-delay:2.5s"></span>
+            <span style="left:68%;bottom:0;animation-duration:10s;animation-delay:4.5s"></span>
+            <span style="left:75%;bottom:0;animation-duration:19s;animation-delay:1.5s"></span>
+            <span style="left:82%;bottom:0;animation-duration:12s;animation-delay:3.5s"></span>
+            <span style="left:90%;bottom:0;animation-duration:16s;animation-delay:0.8s"></span>
+            <span style="left:95%;bottom:0;animation-duration:14s;animation-delay:6s"></span>
+            <span style="left:18%;bottom:0;animation-duration:20s;animation-delay:7s"></span>
+            <span style="left:55%;bottom:0;animation-duration:11s;animation-delay:8s"></span>
+            <span style="left:78%;bottom:0;animation-duration:15s;animation-delay:2.2s"></span>
+        </div>
+
+        <!-- Blurred Background Element -->
+        <div class="hero-blur-overlay"></div>
+
+        <!-- Navbar -->
+        <div class="hero-navbar">
+            <div class="hero-navbar-left">
+                <div class="logo" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <svg viewBox="0 0 100 100" class="cute-penguin" style="width: 42px; height: 42px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">
+                        <path d="M 15 45 C 15 5, 85 5, 85 45 C 85 85, 75 95, 50 95 C 25 95, 15 85, 15 45" fill="#1e293b"/>
+                        <path d="M 25 50 C 25 25, 75 25, 75 50 C 75 87, 65 92, 50 92 C 35 92, 25 87, 25 50" fill="#f1f5f9"/>
+                        <path d="M 30 46 C 10 50, 14 85, 23 94 C 30 85, 30 65, 45 58 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+                        <path d="M 70 46 C 90 50, 86 85, 77 94 C 70 85, 70 65, 55 58 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+                        <g transform="translate(62, 65)">
+                            <rect x="0" y="0" width="10" height="10" rx="3" fill="#10b981"/>
+                            <path d="M 5 2 L 5 8 M 2 5 L 8 5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                        </g>
+                        <path d="M 27 57 C 27 82, 73 82, 73 57" fill="none" stroke="#475569" stroke-width="2.5"/>
+                        <path d="M 27 57 C 24 48, 19 40, 21 35" fill="none" stroke="#475569" stroke-width="2"/>
+                        <circle cx="21" cy="35" r="2" fill="#cbd5e1"/>
+                        <path d="M 73 57 C 76 48, 81 40, 79 35" fill="none" stroke="#475569" stroke-width="2"/>
+                        <circle cx="79" cy="35" r="2" fill="#cbd5e1"/>
+                        <path d="M 50 74 L 50 82" fill="none" stroke="#475569" stroke-width="2.5"/>
+                        <circle cx="50" cy="85" r="4" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+                        <circle cx="50" cy="85" r="1.5" fill="#475569"/>
+                        <path d="M 32 20 Q 50 24 68 20" fill="none" stroke="#475569" stroke-width="2.5"/>
+                        <circle cx="50" cy="22" r="6" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+                        <path d="M 47 20 Q 50 18 53 20" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M 25 92 C 20 92, 18 97, 25 97 L 35 97 C 37 97, 35 92, 30 92 Z" fill="#f59e0b"/>
+                        <path d="M 75 92 C 80 92, 82 97, 75 97 L 65 97 C 63 97, 65 92, 70 92 Z" fill="#f59e0b"/>
+                        <ellipse cx="30" cy="52" rx="4" ry="2" fill="#ffb3c6" opacity="0.6"/>
+                        <ellipse cx="70" cy="52" rx="4" ry="2" fill="#ffb3c6" opacity="0.6"/>
+                        <g class="eyes">
+                            <ellipse cx="38" cy="42" rx="4" ry="6" fill="#0f172a"/>
+                            <circle cx="39" cy="40" r="1.5" fill="#ffffff"/>
+                            <ellipse cx="62" cy="42" rx="4" ry="6" fill="#0f172a"/>
+                            <circle cx="63" cy="40" r="1.5" fill="#ffffff"/>
+                        </g>
+                        <path d="M 46 48 L 54 48 L 50 54 Z" fill="#f59e0b"/>
+                        <g class="flipper-left" style="transform-origin: 20px 55px;">
+                            <path d="M 20 55 C 5 65, 5 80, 10 85 C 15 90, 20 75, 20 55" fill="#1e293b"/>
+                        </g>
+                        <g class="flipper-right flipper-wave" style="transform-origin: 80px 55px;">
+                            <path d="M 80 55 C 95 65, 95 80, 90 85 C 85 90, 80 75, 80 55" fill="#1e293b"/>
+                        </g>
+                    </svg>
+                    <span class="logo-text" style="color: #fff; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 18px;">Med Penguim</span>
+                </div>
+                <div class="hero-nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#diferenciais">Diferenciais</a>
+                    <a href="#planos">Planos</a>
+                    <a href="mailto:medpenguin2026@gmail.com">Contato</a>
+                </div>
+            </div>
+            <div class="hero-navbar-right">
+                <a href="login.html" id="nav-login-btn" class="btn-signin">Área do Aluno</a>
+                <a href="auth/register.html" class="btn-get-started">Começar Agora</a>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-center-content">
+            <div class="hero-heading-block">
+                <div class="badge-premium">🐧 A NOVA ERA DA APRENDIZAGEM MÉDICA</div>
+                <h1 class="hero-heading-line1">Domine a Medicina.</h1>
+                <span class="hero-heading-line2">Estude com Inteligência.</span>
+                <p class="hero-subtitle">A plataforma definitiva de flashcards, questões comentadas e resumos estratégicos projetada para o seu sucesso na faculdade de medicina.</p>
+            </div>
+            <div class="hero-cta-row">
+                <a href="auth/register.html" class="btn-cta-primary">🚀 Começar Agora — É Grátis</a>
+                <a href="#planos" class="btn-cta-secondary">Explorar Planos de Elite</a>
+            </div>
+            <!-- Social Proof -->
+            <div class="hero-social-proof">
+                <div class="avatar-stack">
+                    <span>AM</span>
+                    <span>JP</span>
+                    <span>LC</span>
+                    <span>+</span>
+                </div>
+                <span class="social-proof-text">Junte-se a <strong>centenas de alunos</strong> que já estudam melhor</span>
+            </div>
+        </div>
+
+        <!-- Dashboard Preview (Glassmorphic) -->
+        <div class="hero-dashboard-wrap">
+            <div class="hero-dashboard-outer">
+                <img src="app/img/dashboard-preview.png" alt="MedPenguim Dashboard Preview" loading="lazy" onerror="this.parentElement.style.display='none'">
+            </div>
+        </div>
+    </section>
+
+        <main>
+
+            <!-- Stats Bar -->
+            <section class="stats-bar">
+                <div class="container">
+                    <div class="stats-grid">
+                        <div class="stat-block">
+                            <div class="stat-number">2.400+</div>
+                            <div class="stat-desc">Flashcards disponíveis</div>
+                        </div>
+                        <div class="stat-block">
+                            <div class="stat-number">1.200+</div>
+                            <div class="stat-desc">Questões comentadas</div>
+                        </div>
+                        <div class="stat-block">
+                            <div class="stat-number">8</div>
+                            <div class="stat-desc">Matérias completas</div>
+                        </div>
+                        <div class="stat-block">
+                            <div class="stat-number">3</div>
+                            <div class="stat-desc">Semestres cobertos</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="container" id="diferenciais">
+                <h2 class="section-title">Por que escolher o MedPenguim?</h2>
+                <p class="section-subtitle">Tudo o que você precisa para brilhar nas provas e na prática médica em um só
+                    lugar.
+                </p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">🧠</span>
+                        <h3>Flashcards Inteligentes</h3>
+                        <p>Algoritmo de repetição espaçada que garante que você nunca esqueça o que aprendeu.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">📚</span>
+                        <h3>Questões Comentadas</h3>
+                        <p>Milhares de questões do Guyton & Hall e outras referências com feedback pedagógico detalhado.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">📝</span>
+                        <h3>Resumos Direcionados</h3>
+                        <p>Conteúdo sintetizado focando no que realmente cai nas provas da faculdade.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">📊</span>
+                        <h3>Análise de Desempenho</h3>
+                        <p>Acompanhe sua evolução por matéria e saiba exatamente onde precisa focar mais.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Como Funciona Section -->
+            <section class="container">
+                <h2 class="section-title">Como funciona?</h2>
+                <p class="section-subtitle">Três passos simples para transformar seus estudos de Medicina.</p>
+
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <span class="step-icon">📲</span>
+                        <h3>Crie sua conta grátis</h3>
+                        <p>Cadastre-se em segundos e acesse uma matéria gratuita de cada semestre para conhecer a plataforma.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <span class="step-icon">🎯</span>
+                        <h3>Escolha seu semestre</h3>
+                        <p>Selecione as matérias do seu semestre e estude com flashcards, questões e resumos direcionados.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <span class="step-icon">🏆</span>
+                        <h3>Domine o conteúdo</h3>
+                        <p>Acompanhe seu progresso, foque nas áreas fracas e chegue na prova com confiança total.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Free Subjects Section -->
+            <section class="container">
+                <div class="free-subjects-header">
+                    <span class="badge badge-mb-32">Experimente grátis antes de assinar</span>
+                    <h2 class="section-title section-title-mb-24">Uma matéria grátis por semestre</h2>
+                    <p class="section-subtitle">
+                        Liberamos uma matéria gratuita de cada semestre para você conhecer o MedPenguim por dentro.
+                        Explore questões comentadas, flashcards e explicações no nível da graduação em Medicina.
+                    </p>
+                </div>
+
+                <div class="free-subjects-grid">
+                    <!-- 1º Semestre: Anatomia I (ATIVO) -->
+                    <a href="app/index.html#/subject/anatomy1" class="subject-card">
+                        <div class="subject-header">
+                            <span class="semester-badge">1º Semestre</span>
+                            <span class="free-access-badge">Acesso gratuito</span>
+                        </div>
+                        <h3>Anatomia I</h3>
+                        <div class="subject-arrow">→</div>
+                    </a>
+
+                    <!-- 2º Semestre: Histologia II (ATIVO) -->
+                    <a href="app/index.html#/subject/histology2" class="subject-card">
+                        <div class="subject-header">
+                            <span class="semester-badge">2º Semestre</span>
+                            <span class="free-access-badge">Acesso gratuito</span>
+                        </div>
+                        <h3>Histologia II</h3>
+                        <div class="subject-arrow">→</div>
+                    </a>
+
+                    <!-- 3º Semestre: Fisiologia I (ATIVO) -->
+                    <a href="app/index.html#/subject/physio_med" class="subject-card">
+                        <div class="subject-header">
+                            <span class="semester-badge">3º Semestre</span>
+                            <span class="free-access-badge">Acesso gratuito</span>
+                        </div>
+                        <h3>Fisiologia I</h3>
+                        <div class="subject-arrow">→</div>
+                    </a>
+
+
+                    <!-- 4º Semestre: Patologia Geral (EM BREVE) -->
+                    <div class="subject-card disabled-card"
+                        onclick="showToast('🔒 Conteúdo em desenvolvimento! Em breve disponível.', 'info')">
+                        <div class="subject-header">
+                            <span class="semester-badge">4º Semestre</span>
+                            <span class="coming-soon-badge">Em breve</span>
+                        </div>
+                        <h3>Patologia Geral</h3>
+                        <div class="subject-arrow">🔒</div>
+                    </div>
+
+                    <!-- 5º Semestre: Microbiologia (EM BREVE) -->
+                    <div class="subject-card disabled-card"
+                        onclick="showToast('🔒 Conteúdo em desenvolvimento! Em breve disponível.', 'info')">
+                        <div class="subject-header">
+                            <span class="semester-badge">5º Semestre</span>
+                            <span class="coming-soon-badge">Em breve</span>
+                        </div>
+                        <h3>Microbiologia</h3>
+                        <div class="subject-arrow">🔒</div>
+                    </div>
+
+                    <!-- 6º Semestre: Imaginologia (EM BREVE) -->
+                    <div class="subject-card disabled-card"
+                        onclick="showToast('🔒 Conteúdo em desenvolvimento! Em breve disponível.', 'info')">
+                        <div class="subject-header">
+                            <span class="semester-badge">6º Semestre</span>
+                            <span class="coming-soon-badge">Em breve</span>
+                        </div>
+                        <h3>Imaginologia</h3>
+                        <div class="subject-arrow">🔒</div>
+                    </div>
+
+                    <!-- 7º Semestre: Clínica Médica I (EM BREVE) -->
+                    <div class="subject-card disabled-card"
+                        onclick="showToast('🔒 Conteúdo em desenvolvimento! Em breve disponível.', 'info')">
+                        <div class="subject-header">
+                            <span class="semester-badge">7º Semestre</span>
+                            <span class="coming-soon-badge">Em breve</span>
+                        </div>
+                        <h3>Clínica Médica I</h3>
+                        <div class="subject-arrow">🔒</div>
+                    </div>
+
+                    <!-- 8º Semestre: Pediatria I (EM BREVE) -->
+                    <div class="subject-card disabled-card"
+                        onclick="showToast('🔒 Conteúdo em desenvolvimento! Em breve disponível.', 'info')">
+                        <div class="subject-header">
+                            <span class="semester-badge">8º Semestre</span>
+                            <span class="coming-soon-badge">Em breve</span>
+                        </div>
+                        <h3>Pediatria I</h3>
+                        <div class="subject-arrow">🔒</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section class="container">
+                <h2 class="section-title">O que dizem nossos alunos</h2>
+                <p class="section-subtitle">Estudantes de medicina que já transformaram sua rotina de estudos.
+                </p>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Os flashcards são viciantes! Estudo no ônibus, na fila do RU, em qualquer lugar. Minha nota em Anatomia subiu demais depois que comecei a usar."</p>
+                        <div class="testimonial-user">
+                            <div class="user-avatar">AM</div>
+                            <div class="user-meta">
+                                <h4>UCP - Ana Maria</h4>
+                                <span>3º Semestre</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"As questões comentadas com dica de prova são geniais. Eu realmente entendo o porquê de cada alternativa, não fico só decorando."</p>
+                        <div class="testimonial-user">
+                            <div class="user-avatar">JP</div>
+                            <div class="user-meta">
+                                <h4>UCP - João Pedro</h4>
+                                <span>2º Semestre</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"O melhor é que o conteúdo é organizado por semestre. Não preciso ficar caçando material, já está tudo pronto e direcionado."</p>
+                        <div class="testimonial-user">
+                            <div class="user-avatar">LC</div>
+                            <div class="user-meta">
+                                <h4>UCP - Luísa Costa</h4>
+                                <span>1º Semestre</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Section -->
+            <section class="pricing-section" id="planos">
+                <div class="container">
+                    <h2 class="section-title">Escolha o seu plano de elite</h2>
+                    <p class="section-subtitle">Acelere seus estudos com acesso total a flashcards, questões e resumos.</p>
+
+                    <div class="pricing-grid-four">
+                        <!-- MENSAL -->
+                        <div class="pricing-card-mini">
+                            <div class="p-card-header">Mensal</div>
+                            <div class="p-card-price">R$ 19,90<span>/mês</span></div>
+                            <div class="p-card-desc">Ideal para um empurrão final antes da prova.</div>
+                            <button class="btn btn-outline btn-full-width" onclick="handleSubscribe('monthly')">Assinar Mensal</button>
+                        </div>
+
+                        <!-- 3 MESES -->
+                        <div class="pricing-card-mini">
+                            <div class="p-card-header">Trimestral</div>
+                            <div class="p-card-price">R$ 49,90<span>/trimestre</span></div>
+                            <div class="p-card-desc">Foque no seu semestre com economia.</div>
+                            <button class="btn btn-outline btn-full-width" onclick="handleSubscribe('quarterly')">Assinar 3 Meses</button>
+                        </div>
+
+                        <!-- 6 MESES (DESTACADO) -->
+                        <div class="pricing-card-mini featured">
+                            <div class="p-card-badge">MAIS VENDIDO</div>
+                            <div class="p-card-header">Semestral</div>
+                            <div class="p-card-price">R$ 89,90<span>/semestre</span></div>
+                            <div class="p-card-desc">O melhor para quem quer constância e resultado.</div>
+                            <button class="btn btn-primary btn-full-width" onclick="handleSubscribe('semiannual')">Assinar 6 Meses</button>
+                        </div>
+
+                        <!-- ANUAL -->
+                        <div class="pricing-card-mini">
+                            <div class="p-card-header">Anual</div>
+                            <div class="p-card-price">R$ 149,90<span>/ano</span></div>
+                            <div class="p-card-desc">Acesso total garantido para o ano inteiro.</div>
+                            <button class="btn btn-outline btn-full-width" onclick="handleSubscribe('annual')">Assinar Anual</button>
+                        </div>
+                    </div>
+
+                    <!-- Plano Free Sutil -->
+                    <div class="free-plan-footer">
+                        <p>Ainda está em dúvida? <a href="auth/register.html">Experimente uma matéria grátis por semestre</a>.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+            <!-- FAQ Section -->
+            <section class="container">
+                <h2 class="section-title">Perguntas Frequentes</h2>
+                <p class="section-subtitle">Tire suas dúvidas sobre o MedPenguim.</p>
+
+                <div class="faq-section">
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+                            O plano gratuito realmente não tem custo?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Sim! O plano Free é 100% gratuito e não precisa de cartão de crédito. Você tem acesso a uma matéria completa por semestre para conhecer a plataforma antes de decidir.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+                            Posso cancelar o Premium a qualquer momento?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Sim, sem burocracia! Você pode cancelar sua assinatura a qualquer momento diretamente pela plataforma. Sem taxas de cancelamento, sem perguntas.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+                            Quais matérias estão disponíveis?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Atualmente cobrimos 8 matérias dos 3 primeiros semestres de Medicina, incluindo Anatomia, Histologia, Embriologia, Bioestatística, Metodologia e Fisiologia. Novos semestres são adicionados continuamente.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+                            O conteúdo é atualizado?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Sim! A plataforma é atualizada frequentemente com novas questões, flashcards e resumos. Nosso objetivo é acompanhar o ritmo da sua faculdade para que o conteúdo esteja sempre alinhado com o que você precisa estudar.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+                            E se eu não gostar? Tem garantia?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Você pode experimentar gratuitamente antes de assinar. E mesmo depois de assinar, pode cancelar a qualquer momento. Além disso, oferecemos garantia de 7 dias — se não gostar, devolvemos seu dinheiro.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+                            Como funciona o pagamento?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                O pagamento é feito via PIX, rápido e seguro. Assim que confirmado, seu acesso Premium é liberado automaticamente em poucos minutos.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Final -->
+            <section class="cta-final">
+                <div class="container">
+                    <h2>Pronto para dominar a Medicina?</h2>
+                    <p>Junte-se a estudantes que já estão estudando de forma mais inteligente e chegando nas provas com confiança.</p>
+                    <a href="auth/register.html" class="btn btn-primary">🚀 Começar Grátis Agora</a>
+                    <div class="cta-guarantee">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>Sem compromisso. Cancele quando quiser.</span>
+                    </div>
+                </div>
+            </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="logo">
+                            <img src="assets/img/logo-footer.png" alt="MedPenguim Footer Logo" class="footer-logo-img"
+                                loading="lazy">
+                            Med Penguim
+                        </div>
+                        <p>Transformando a educação médica através da tecnologia e pedagogia de elite.</p>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Plataforma</h4>
+                        <ul>
+                            <li><a href="#diferenciais">Diferenciais</a></li>
+                            <li><a href="#planos">Planos</a></li>
+                            <li><a href="app/index.html">Área do Aluno</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="termos.html">Termos de Uso</a></li>
+                            <li><a href="privacidade.html">Privacidade</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Contato</h4>
+                        <ul>
+                            <li><a href="mailto:medpenguin2026@gmail.com">medpenguin2026@gmail.com</a></li>
+                            <li><a href="https://instagram.com/medpenguinn" target="_blank" rel="noopener">@medpenguinn</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 MedPenguim. Todos os direitos reservados. Feito com 💙 para o futuro da medicina.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Checkout Modal -->
+        <div id="data-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-content">
+                <!-- Header (changes based on logged in status) -->
+                <div id="modal-header" class="modal-checkout-header">
+                    <h2 id="modal-title" class="modal-checkout-title">Assine Premium</h2>
+                    <p class="modal-checkout-subtitle">Preencha os dados para continuar</p>
+                </div>
+
+                <!-- Login Options (only shown when NOT logged in) -->
+                <div id="login-options" class="modal-login-options" style="display: none;">
+                    <div class="modal-login-text">
+                        <p>Você também pode:</p>
+                    </div>
+                    <a href="login.html?redirect=checkout" class="btn btn-outline btn-full-width btn-flex-center">
+                        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+                            <path fill="#EA4335"
+                                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z">
+                            </path>
+                            <path fill="#4285F4"
+                                d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z">
+                            </path>
+                            <path fill="#FBBC05"
+                                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z">
+                            </path>
+                            <path fill="#34A853"
+                                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z">
+                            </path>
+                        </svg>
+                        Fazer login com Google
+                    </a>
+                    <div class="modal-login-divider">ou
+                        preencha abaixo:</div>
+                </div>
+
+                <form id="checkout-form">
+                    <div class="form-group">
+                        <label>Nome Completo *</label>
+                        <input type="text" id="user-fullname" required placeholder="Seu nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail *</label>
+                        <input type="email" id="user-email" required placeholder="seu@email.com">
+                    </div>
+
+                    <!-- Password field (only shown when NOT logged in) -->
+                    <div class="form-group" id="password-field" style="display: none;">
+                        <label>Senha *</label>
+                        <input type="password" id="user-password" minlength="6" placeholder="Mínimo 6 caracteres">
+                        <small class="form-group-helper">Escolha uma senha para acessar sua
+                            conta depois</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>CPF *</label>
+                        <input type="text" id="user-taxid" required placeholder="000.000.000-00" maxlength="14">
+                        <small id="cpf-error" class="form-field-error" style="display:none; color:#ff4d4d; font-size:0.82rem; margin-top:4px;">CPF inválido. Verifique os dígitos.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp *</label>
+                        <input type="text" id="user-phone" required placeholder="(00) 00000-0000" maxlength="15">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full-width" id="submit-button">
+                        Gerar Pagamento PIX
+                    </button>
+                </form>
+                <button class="btn btn-outline btn-full-width btn-mt-16"
+                    onclick="document.getElementById('data-modal').style.display='none'">Cancelar</button>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="config.js"></script>
+        <script src="app/js/affiliate.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+        <script>
+            // Wait for page to fully load before initializing
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('[INDEX] DOM loaded, initializing...');
+
+                // Initialize Supabase (usando config centralizado)
+                const supabaseUrl = MEDPENGUIM_CONFIG.supabaseUrl;
+                const supabaseKey = MEDPENGUIM_CONFIG.supabaseKey;
+
+                // Check if supabase is loaded
+                if (!window.supabase) {
+                    console.error('[INDEX] Supabase library not loaded!');
+                    showToast('❌ Erro ao carregar sistema. Recarregue a página.', 'error');
+                    return;
+                }
+
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                console.log('[INDEX] Supabase initialized successfully.');
+
+                // Estado do Plano selecionado
+                let currentPlanId = 'monthly';
+
+                window.selectPlan = (planId, price) => {
+                    currentPlanId = planId;
+                    
+                    // Atualiza visual dos botões
+                    document.querySelectorAll('.plan-opt').forEach(opt => {
+                        opt.classList.remove('active');
+                        if(opt.dataset.plan === planId) opt.classList.add('active');
+                    });
+
+                    // Atualiza textos
+                    const priceEl = document.getElementById('display-price');
+                    const subtextEl = document.getElementById('display-subtext');
+                    
+                    priceEl.innerText = `R$ ${price.toFixed(2).replace('.', ',')}`;
+                    
+                    const subtexts = {
+                        monthly: 'Acesso total por 30 dias',
+                        quarterly: 'Acesso total por 90 dias',
+                        semiannual: 'Acesso total por 180 dias',
+                        annual: 'Acesso total por 365 dias'
+                    };
+                    subtextEl.innerText = subtexts[planId];
+                    
+                    console.log('[PLAN] Selecionado:', planId, 'Preço:', price);
+                };
+
+                async function getAuthUser() {
+                    try {
+                        const { data: { session } } = await supabase.auth.getSession();
+                        return session?.user || null;
+                    } catch (err) {
+                        console.error('[INDEX] Error getting session:', err);
+                        return null;
+                    }
+                }
+
+                // Real handleSubscribe implementation - SMART MODE
+                window.handleSubscribe = async (planId) => {
+                    console.log('[INDEX] Subscribe button clicked for plan:', planId);
+                    
+                    // Se um planId foi passado, usamos ele. Caso contrário, usamos o global (fallback)
+                    const targetPlanId = planId || currentPlanId;
+                    
+                    const btn = document.getElementById('btn-subscribe');
+                    const modal = document.getElementById('data-modal');
+                    const modalHeader = document.getElementById('modal-header');
+                    const loginOptions = document.getElementById('login-options');
+                    const passwordField = document.getElementById('password-field');
+                    const passwordInput = document.getElementById('user-password');
+                    const emailInput = document.getElementById('user-email');
+                    const submitButton = document.getElementById('submit-button');
+
+                    // Guardamos o plano atual para o momento do envio do formulário
+                    currentPlanId = targetPlanId;
+
+                    try {
+                        if (btn) btn.innerText = 'Verificando...';
+
+                        // Check if user is logged in
+                        const user = await getAuthUser();
+                        console.log('[INDEX] Auth user:', user);
+
+                        if (user) {
+                            // USER IS LOGGED IN - Mode: Just collect missing data
+                            console.log('[INDEX] User is logged in, mode: collect checkout data');
+
+                            // Update modal header
+                            modalHeader.innerHTML = `
+                            <h2 style="margin-bottom: 8px;">Falta pouco!</h2>
+                            <p style="color: var(--text-muted);">Confirme seus dados para gerar o pagamento</p>
+                        `;
+
+                            // Hide login options and password field
+                            loginOptions.style.display = 'none';
+                            passwordField.style.display = 'none';
+                            passwordInput.removeAttribute('required');
+
+                            // Make email readonly
+                            emailInput.setAttribute('readonly', 'true');
+
+                            // Update submit button text
+                            submitButton.textContent = 'Gerar Pagamento PIX';
+
+                            // Fetch profile data
+                            let profile = null;
+                            try {
+                                const { data, error } = await supabase
+                                    .from('profiles')
+                                    .select('full_name, phone, cpf')
+                                    .eq('id', user.id)
+                                    .single();
+
+                                if (!error) {
+                                    profile = data;
+                                    console.log('[INDEX] Profile loaded:', profile);
+                                }
+                            } catch (profileError) {
+                                console.warn('[INDEX] Error fetching profile:', profileError);
+                            }
+
+                            // Pre-fill form
+                            document.getElementById('user-fullname').value =
+                                profile?.full_name || user.user_metadata?.full_name || '';
+                            emailInput.value = user.email;
+                            document.getElementById('user-phone').value = profile?.phone || '';
+                            document.getElementById('user-taxid').value = profile?.cpf || '';
+
+                        } else {
+                            // USER IS NOT LOGGED IN - Mode: Create account + checkout
+                            console.log('[INDEX] User is NOT logged in, mode: create account + checkout');
+
+                            // Update modal header
+                            modalHeader.innerHTML = `
+                            <h2 style="margin-bottom: 8px;">Assine Premium em 2 minutos</h2>
+                            <p style="color: var(--text-muted);">Crie sua conta e inicie o pagamento agora</p>
+                        `;
+
+                            // Show login options and password field
+                            loginOptions.style.display = 'block';
+                            passwordField.style.display = 'block';
+                            passwordInput.setAttribute('required', 'true');
+
+                            // Make email editable
+                            emailInput.removeAttribute('readonly');
+
+                            // Update submit button text
+                            submitButton.textContent = 'Criar Conta e Gerar Pagamento';
+
+                            // Clear all fields
+                            document.getElementById('user-fullname').value = '';
+                            emailInput.value = '';
+                            passwordInput.value = '';
+                            document.getElementById('user-phone').value = '';
+                            document.getElementById('user-taxid').value = '';
+                        }
+
+                        // Show modal
+                        modal.style.display = 'flex';
+
+                    } catch (error) {
+                        console.error('[INDEX] Error in subscribe handler:', error);
+                        showToast('❌ Erro ao processar. Tente novamente.', 'error');
+                    } finally {
+                        if (btn) btn.innerText = 'Assinar Agora';
+                    }
+                };
+
+                // Setup input masks and form handlers
+                const modal = document.getElementById('data-modal');
+                const checkoutForm = document.getElementById('checkout-form');
+                const btnSubscribe = document.getElementById('btn-subscribe');
+
+                // Tax ID Mask
+                const taxInput = document.getElementById('user-taxid');
+                if (taxInput) {
+                    taxInput.addEventListener('input', (e) => {
+                        let value = e.target.value.replace(/\D/g, '').substring(0, 11);
+                        if (value.length > 9) value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                        else if (value.length > 6) value = value.replace(/(\d{3})(\d{3})(\d{0,3})/, "$1.$2.$3");
+                        else if (value.length > 3) value = value.replace(/(\d{3})(\d{0,3})/, "$1.$2");
+                        e.target.value = value;
+                        // Clear CPF error when user types
+                        e.target.style.border = '';
+                        const cpfError = document.getElementById('cpf-error');
+                        if (cpfError) cpfError.style.display = 'none';
+                    });
+                }
+
+                // Phone Mask
+                const phoneInput = document.getElementById('user-phone');
+                if (phoneInput) {
+                    phoneInput.addEventListener('input', (e) => {
+                        let value = e.target.value.replace(/\D/g, '').substring(0, 11);
+                        if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+                        else if (value.length > 6) value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+                        else if (value.length > 2) value = value.replace(/(\d{2})(\d{0,5})/, "($1) $2");
+                        e.target.value = value;
+                    });
+                }
+
+                // Button Click Listener
+                if (btnSubscribe) btnSubscribe.onclick = window.handleSubscribe;
+
+                // Checkout Form Submit - SMART HANDLER
+                if (checkoutForm) {
+                    checkoutForm.onsubmit = async (e) => {
+                        e.preventDefault();
+                        const btn = e.target.querySelector('button');
+                        const originalText = btn.innerText;
+
+                        // Collect form data
+                        const name = document.getElementById('user-fullname').value.trim();
+                        const email = document.getElementById('user-email').value.trim();
+                        const password = document.getElementById('user-password').value;
+                        const taxId = document.getElementById('user-taxid').value.replace(/\D/g, '');
+                        const phone = document.getElementById('user-phone').value.replace(/\D/g, '');
+
+                        // Check if we're in "create account" mode (password field visible)
+                        const passwordField = document.getElementById('password-field');
+                        const isCreatingAccount = passwordField.style.display !== 'none';
+
+                        console.log('[INDEX] Form submitted, mode:', isCreatingAccount ? 'CREATE ACCOUNT' : 'EXISTING USER');
+
+                        // Basic validations
+                        if (!name || !email || !taxId || !phone) {
+                            showToast('❌ Preencha todos os campos obrigatórios', 'error');
+                            return;
+                        }
+
+                        if (isCreatingAccount && (!password || password.length < 6)) {
+                            showToast('❌ A senha deve ter no mínimo 6 caracteres', 'error');
+                            return;
+                        }
+
+                        if (!validarCPF(taxId)) {
+                            const cpfInput = document.getElementById('user-taxid');
+                            const cpfError = document.getElementById('cpf-error');
+                            cpfInput.style.border = '2px solid #ff4d4d';
+                            cpfError.style.display = 'block';
+                            cpfInput.focus();
+                            showToast('❌ CPF inválido. Verifique os dígitos e tente novamente.', 'error');
+                            return;
+                        }
+
+                        btn.disabled = true;
+                        btn.innerText = 'Gerando PIX...';
+
+                        try {
+                            let userId = null;
+                            const affiliateCode = window.getAffiliateCode ? window.getAffiliateCode() : null;
+
+                            // 1. Get User ID (Create Account or Get Current)
+                            if (isCreatingAccount) {
+                                // Criar conta no Supabase
+                                const { data, error } = await supabase.auth.signUp({
+                                    email: email,
+                                    password: password,
+                                    options: {
+                                        data: {
+                                            full_name: name,
+                                            cpf: taxId,
+                                            phone: phone,
+                                            affiliate_code: affiliateCode // Salva o afiliado no metadado do usuário
+                                        }
+                                    }
+                                });
+
+                                if (error) throw error;
+                                if (!data.user) throw new Error('Erro ao criar conta. Verifique seu email.');
+                                userId = data.user.id;
+                                console.log('[INDEX] Account created. User ID:', userId, 'Affiliate:', affiliateCode);
+                            } else {
+                                // Usuário já logado
+                                const user = await getAuthUser();
+                                if (!user) throw new Error('Usuário não autenticado. Faça login novamente.');
+                                userId = user.id;
+                            }
+
+                            // 2. Call Mercado Pago Function
+                            console.log('[INDEX] Calling create-mercadopago-payment with affiliate:', affiliateCode);
+                            const response = await fetch('/.netlify/functions/create-mercadopago-payment', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    user_id: userId,
+                                    email: email,
+                                    name: name,
+                                    cpf: taxId,
+                                    plan_id: currentPlanId, // Agora usa o plano selecionado dinamicamente
+                                    affiliate_code: affiliateCode
+                                })
+                            });
+
+                            const result = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(result.error || 'Erro ao gerar PIX');
+                            }
+
+                            // 3. Show QR Code (Success)
+                            const modalContent = document.querySelector('.modal-content');
+                            modalContent.innerHTML = `
+                            <div class="pix-success-container">
+                                <div class="pix-success-icon">✅</div>
+                                <h2 class="pix-success-title">Pagamento Gerado!</h2>
+                                <p class="pix-success-subtitle">
+                                    Abra o app do seu banco e escaneie o QR Code abaixo ou use o código Copia e Cola.
+                                </p>
+                                
+                                <div class="pix-qr-container">
+                                    <img src="data:image/png;base64,${result.qr_code_base64}" class="pix-qr-image" alt="QR Code PIX">
+                                </div>
+                                
+                                <div class="form-group pix-code-group">
+                                    <label>Código Copia e Cola:</label>
+                                    <div class="pix-code-wrapper">
+                                        <textarea id="pix-copy-paste" readonly class="pix-code-area">${result.qr_code_copia_e_cola}</textarea>
+                                        <button onclick="navigator.clipboard.writeText(document.getElementById('pix-copy-paste').value).then(() => showToast('✅ Código copiado!', 'success'))" 
+                                            class="btn btn-outline pix-copy-btn">
+                                            Copiar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary btn-full-width btn-mt-20" onclick="window.location.reload()">
+                                    Já fiz o pagamento
+                                </button>
+                                <p class="pix-success-footer">
+                                    Seu acesso Premium será liberado automaticamente após a confirmação.
+                                </p>
+                            </div>
+                        `;
+
+                        } catch (error) {
+                            console.error('[INDEX] Payment error:', error);
+                            showToast('❌ Erro: ' + error.message, 'error');
+                            btn.disabled = false;
+                            btn.innerText = originalText;
+                        }
+                    };
+                }
+
+                // Auto-update login button and handle checkout redirect
+                (async () => {
+                    const user = await getAuthUser();
+                    if (user) {
+                        const loginBtn = document.getElementById('nav-login-btn');
+                        if (loginBtn) {
+                            loginBtn.innerText = 'Área do Aluno';
+                            loginBtn.href = 'app/index.html';
+                        }
+                    }
+
+                    // Check if we need to auto-trigger checkout (WORKS FOR BOTH GUEST AND USER)
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.get('action') === 'checkout' && btnSubscribe) {
+                        // Scroll to plans first for context
+                        const plansSection = document.getElementById('planos');
+                        if (plansSection) plansSection.scrollIntoView({ behavior: 'smooth' });
+
+                        // Open modal
+                        setTimeout(() => {
+                            btnSubscribe.click();
+                        }, 500);
+                    }
+                })();
+
+                // Close modal on outside click
+                window.onclick = (e) => {
+                    if (modal && e.target === modal) modal.style.display = 'none';
+                };
+            });
+        </script>
+
+        <div class="toast-container" id="toast-container"></div>
+
+        <script>
+            // Toast notification system
+            function showToast(message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                container.appendChild(toast);
+
+                // Auto-dismiss after 3.5s
+                setTimeout(() => {
+                    toast.classList.add('toast-out');
+                    toast.addEventListener('animationend', () => toast.remove());
+                }, 3500);
+            }
+
+            // Scroll reveal animations
+            document.addEventListener('DOMContentLoaded', () => {
+                // Add reveal class to all major sections
+                document.querySelectorAll('section, .features-grid, .pricing-card, .testimonials-grid, .subjects-grid').forEach(el => {
+                    el.classList.add('reveal');
+                });
+
+                // Don't add reveal to the hero (should be visible immediately)
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    hero.classList.remove('reveal');
+                }
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            });
+        </script>
+</body>
+
+</html>

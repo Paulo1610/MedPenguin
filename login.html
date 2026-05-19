@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MedPenguim</title>
+    <meta name="description"
+        content="Entre na sua conta MedPenguim para acessar questões, flashcards e resumos médicos.">
+    <link rel="icon" type="image/png" href="app/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- UTMify Tracking Script -->
+    <script
+      src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+      data-utmify-prevent-xcod-sck
+      data-utmify-prevent-subids
+      async
+      defer
+    ></script>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --bg-input: rgba(15, 23, 42, 0.6);
+            --border-color: rgba(99, 102, 241, 0.2);
+            --border-focus: rgba(99, 102, 241, 0.6);
+            --primary: #6366f1;
+            --primary-hover: #818cf8;
+            --text-white: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+            --error-bg: rgba(239, 68, 68, 0.15);
+            --error-text: #f87171;
+            --success-bg: rgba(34, 197, 94, 0.15);
+            --success-text: #4ade80;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
+            animation: bgFloat 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes bgFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(2%, -2%) rotate(1deg);
+            }
+
+            66% {
+                transform: translate(-1%, 1%) rotate(-0.5deg);
+            }
+        }
+
+        .login-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 0 24px;
+        }
+
+        /* Logo / Brand */
+        .login-brand {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .login-brand .logo-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+
+        .login-brand h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f1f5f9, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-brand p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 10px;
+            font-style: italic;
+            min-height: 44px; /* prevents layout shift */
+            transition: opacity 0.5s ease;
+            opacity: 0;
+            padding: 0 10px;
+        }
+
+        /* Card */
+        .login-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 36px 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Error/Success boxes */
+        .error-message {
+            background: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .success-message {
+            background: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        /* Google Button */
+        .google-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: var(--text-white);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .google-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            gap: 16px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+        }
+
+        .divider span {
+            color: var(--text-subtle);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-white);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-subtle);
+        }
+
+        .form-group input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Password Wrapper */
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-input-wrapper input {
+            padding-right: 48px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            transition: color 0.2s;
+            outline: none;
+        }
+
+        .toggle-password:hover {
+            color: var(--text-white);
+        }
+
+        .toggle-password:focus {
+            color: var(--primary);
+        }
+
+        /* Interactive Penguin */
+        .interactive-penguin {
+            overflow: visible;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            z-index: 10;
+        }
+
+        .interactive-penguin .flipper-left, 
+        .interactive-penguin .flipper-right, 
+        .interactive-penguin .eyes {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .interactive-penguin.covering-eyes .flipper-left {
+            transform: translate(25px, -24px) rotate(-140deg);
+        }
+
+        .interactive-penguin.covering-eyes .flipper-right {
+            transform: translate(-25px, -24px) rotate(140deg);
+        }
+
+        .interactive-penguin.covering-eyes .eyes {
+            transform: scaleY(0.1);
+            transform-origin: center 42px;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1, #818cf8);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Links */
+        .login-links {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .login-links a {
+            color: var(--text-subtle);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .login-links a:hover {
+            color: var(--text-white);
+        }
+
+        .login-links .highlight {
+            color: var(--primary-hover);
+            font-weight: 600;
+        }
+
+        .login-links .highlight:hover {
+            color: #c7d2fe;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .back-link a {
+            color: var(--text-subtle);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 28px 20px;
+                border-radius: 16px;
+            }
+
+            .login-brand h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <div class="login-brand">
+            <svg viewBox="0 0 100 100" class="interactive-penguin" width="90" height="90">
+                <path d="M 15 45 C 15 5, 85 5, 85 45 C 85 85, 75 95, 50 95 C 25 95, 15 85, 15 45" fill="#1e293b"/>
+                <path d="M 25 50 C 25 25, 75 25, 75 50 C 75 87, 65 92, 50 92 C 35 92, 25 87, 25 50" fill="#f1f5f9"/>
+
+                <!-- Doctor Jaleco -->
+                <path d="M 30 46 C 10 50, 14 85, 23 94 C 30 85, 30 65, 45 58 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+                <path d="M 70 46 C 90 50, 86 85, 77 94 C 70 85, 70 65, 55 58 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+
+                <!-- Medical Badge -->
+                <g transform="translate(62, 65)">
+                    <rect x="0" y="0" width="10" height="10" rx="3" fill="#10b981"/>
+                    <path d="M 5 2 L 5 8 M 2 5 L 8 5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                </g>
+
+                <!-- Doctor Stethoscope -->
+                <path d="M 27 57 C 27 82, 73 82, 73 57" fill="none" stroke="#475569" stroke-width="2.5"/>
+                <path d="M 27 57 C 24 48, 19 40, 21 35" fill="none" stroke="#475569" stroke-width="2"/>
+                <circle cx="21" cy="35" r="2" fill="#cbd5e1"/>
+                <path d="M 73 57 C 76 48, 81 40, 79 35" fill="none" stroke="#475569" stroke-width="2"/>
+                <circle cx="79" cy="35" r="2" fill="#cbd5e1"/>
+                <path d="M 50 74 L 50 82" fill="none" stroke="#475569" stroke-width="2.5"/>
+                <circle cx="50" cy="85" r="4" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+                <circle cx="50" cy="85" r="1.5" fill="#475569"/>
+
+                <!-- Doctor Head Mirror -->
+                <path d="M 32 20 Q 50 24 68 20" fill="none" stroke="#475569" stroke-width="2.5"/>
+                <circle cx="50" cy="22" r="6" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+                <path d="M 47 20 Q 50 18 53 20" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+
+                <path d="M 25 92 C 20 92, 18 97, 25 97 L 35 97 C 37 97, 35 92, 30 92 Z" fill="#f59e0b"/>
+                <path d="M 75 92 C 80 92, 82 97, 75 97 L 65 97 C 63 97, 65 92, 70 92 Z" fill="#f59e0b"/>
+                <ellipse cx="30" cy="52" rx="4" ry="2" fill="#ffb3c6" opacity="0.6"/>
+                <ellipse cx="70" cy="52" rx="4" ry="2" fill="#ffb3c6" opacity="0.6"/>
+                <g class="eyes">
+                    <ellipse cx="38" cy="42" rx="4" ry="6" fill="#0f172a"/>
+                    <circle cx="39" cy="40" r="1.5" fill="#ffffff"/>
+                    <ellipse cx="62" cy="42" rx="4" ry="6" fill="#0f172a"/>
+                    <circle cx="63" cy="40" r="1.5" fill="#ffffff"/>
+                </g>
+                <path d="M 46 48 L 54 48 L 50 54 Z" fill="#f59e0b"/>
+                <g class="flipper-left" style="transform-origin: 20px 55px;">
+                    <path d="M 20 55 C 5 65, 5 80, 10 85 C 15 90, 20 75, 20 55" fill="#1e293b"/>
+                </g>
+                <g class="flipper-right" style="transform-origin: 80px 55px;">
+                    <path d="M 80 55 C 95 65, 95 80, 90 85 C 85 90, 80 75, 80 55" fill="#1e293b"/>
+                </g>
+            </svg>
+            <h1>MedPenguim</h1>
+            <p id="motivational-quote">Inspirando futuros médicos...</p>
+        </div>
+
+        <div class="login-card">
+            <div id="error-box" class="error-message"></div>
+            <div id="success-box" class="success-message"></div>
+
+            <button id="google-btn" class="google-btn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Entrar com Google
+            </button>
+
+            <div class="divider">
+                <span>ou com email</span>
+            </div>
+
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required placeholder="seu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="password" required placeholder="Sua senha" minlength="6">
+                        <button type="button" class="toggle-password" id="toggle-password" aria-label="Mostrar senha" tabindex="-1">
+                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+
+                <button type="submit" id="submit-btn" class="submit-btn">Entrar</button>
+
+                <div style="text-align: right; margin-top: 12px;">
+                    <a href="#" id="forgot-password-link" style="font-size: 0.8rem; color: var(--text-subtle); text-decoration: none; transition: color 0.2s;">Esqueceu sua senha?</a>
+                </div>
+            </form>
+
+            <div class="login-links">
+                <a href="auth/register.html">Não tem uma conta? <span class="highlight">Cadastre-se</span></a>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">← Voltar para Home</a>
+        </div>
+    </div>
+
+    <!-- Config + Supabase CDN -->
+    <script src="config.js"></script>
+    <script src="app/js/affiliate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        window.supabase = supabase.createClient(MEDPENGUIM_CONFIG.supabaseUrl, MEDPENGUIM_CONFIG.supabaseKey);
+    </script>
+
+    <script>
+        const SITE_URL = MEDPENGUIM_CONFIG.siteUrl;
+        const APP_REDIRECT = SITE_URL + '/app/index.html';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectTarget = urlParams.get('redirect');
+
+            function handleRedirect() {
+                if (redirectTarget === 'checkout') {
+                    window.location.href = 'index.html?action=checkout';
+                } else {
+                    window.location.href = 'app/index.html';
+                }
+            }
+
+            // 1. Listen for auth state changes (Google OAuth callback, etc.)
+            window.supabase.auth.onAuthStateChange((event, session) => {
+                console.log('[LOGIN] Auth Event:', event);
+                if (event === 'SIGNED_IN' && session) {
+                    handleRedirect();
+                }
+            });
+
+            // 2. Check if already logged in
+            const { data: { session } } = await window.supabase.auth.getSession();
+            if (session) {
+                handleRedirect();
+                return;
+            }
+
+            // 3. Google Login
+            document.getElementById('google-btn').addEventListener('click', async () => {
+                const { data, error } = await window.supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { redirectTo: APP_REDIRECT }
+                });
+                if (error) {
+                    console.error('[LOGIN] Google OAuth error:', error);
+                    document.getElementById('error-box').textContent = 'Erro ao conectar com Google.';
+                    document.getElementById('error-box').style.display = 'block';
+                }
+            });
+
+            // Toggle Password Visibility & Penguin Animation
+            const togglePasswordBtn = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.querySelector('.eye-icon');
+            const eyeOffIcon = document.querySelector('.eye-off-icon');
+            const interactivePenguin = document.querySelector('.interactive-penguin');
+
+            if (togglePasswordBtn && passwordInput) {
+                togglePasswordBtn.addEventListener('click', () => {
+                    const isPassword = passwordInput.type === 'password';
+                    
+                    if (isPassword) {
+                        passwordInput.type = 'text';
+                        eyeIcon.style.display = 'none';
+                        eyeOffIcon.style.display = 'block';
+                        if (interactivePenguin) {
+                            interactivePenguin.classList.add('covering-eyes');
+                        }
+                    } else {
+                        passwordInput.type = 'password';
+                        eyeIcon.style.display = 'block';
+                        eyeOffIcon.style.display = 'none';
+                        if (interactivePenguin) {
+                            interactivePenguin.classList.remove('covering-eyes');
+                        }
+                    }
+                });
+            }
+
+            const form = document.getElementById('auth-form');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const submitBtn = document.getElementById('submit-btn');
+                    const errorBox = document.getElementById('error-box');
+
+                    submitBtn.innerHTML = 'Processando...';
+                    submitBtn.disabled = true;
+                    errorBox.style.display = 'none';
+
+                    try {
+                        const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
+                        if (error) throw error;
+                        // onAuthStateChange will fire and call handleRedirect()
+                    } catch (err) {
+                        console.error('[LOGIN] Error:', err);
+                        errorBox.textContent = err.message || 'Email ou senha incorretos.';
+                        errorBox.style.display = 'block';
+                        submitBtn.innerHTML = 'Entrar';
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+
+            // 6. Forgot Password Logic
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email').value;
+                    const errorBox = document.getElementById('error-box');
+                    const successBox = document.getElementById('success-box');
+
+                    if (!email) {
+                        errorBox.textContent = 'Por favor, digite seu e-mail para recuperar a senha.';
+                        errorBox.style.display = 'block';
+                        successBox.style.display = 'none';
+                        return;
+                    }
+
+                    forgotPasswordLink.textContent = 'Enviando...';
+                    forgotPasswordLink.style.pointerEvents = 'none';
+
+                    try {
+                        const { error } = await window.supabase.auth.resetPasswordForEmail(email, {
+                            redirectTo: `${window.location.origin}/reset-password.html`,
+                        });
+                        if (error) throw error;
+
+                        successBox.textContent = 'Link de recuperação enviado! Verifique seu e-mail.';
+                        successBox.style.display = 'block';
+                        errorBox.style.display = 'none';
+                    } catch (err) {
+                        console.error('[FORGOT] Error:', err);
+                        errorBox.textContent = err.message || 'Erro ao enviar e-mail de recuperação.';
+                        errorBox.style.display = 'block';
+                        successBox.style.display = 'none';
+                    } finally {
+                        forgotPasswordLink.textContent = 'Esqueceu sua senha?';
+                        forgotPasswordLink.style.pointerEvents = 'auto';
+                    }
+                });
+            }
+
+            // 7. Motivational Quotes
+            const quotes = [
+                '"O cansaço de hoje é o CRM de amanhã."',
+                '"Estudar medicina é aprender a linguagem do dom da vida."',
+                '"Cada página lida é um passo a mais para salvar uma vida."',
+                '"A dedicação aos estudos hoje será o alívio do seu paciente amanhã."',
+                '"O conhecimento médico é o seu superpoder mais forte."',
+                '"Sua jornada na medicina começou com um sonho. Continue firme."',
+                '"A medicina é a arte de curar, e o estudo é a semente dessa arte."',
+                '"Grandes médicos são, antes de tudo, grandes estudantes."'
+            ];
+            const quoteEl = document.getElementById('motivational-quote');
+            if (quoteEl) {
+                quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+                // Fade in effect
+                setTimeout(() => { quoteEl.style.opacity = '1'; }, 100);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<svg width="600" height="450" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg" style="background: #ffffff;">
+  <!-- Title -->
+  <text x="300" y="30" font-family="Arial, sans-serif" font-size="22" font-weight="bold" text-anchor="middle" fill="#1e293b">Forças de Starling na Microcirculação</text>
+  
+  <!-- Arteriole -->
+  <path d="M 30 200 L 130 200" stroke="#dc2626" stroke-width="25" fill="none" stroke-linecap="round"/>
+  <text x="80" y="180" font-family="Arial" font-size="13" font-weight="bold" text-anchor="middle" fill="#7f1d1d">Arteríola</text>
+  
+  <!-- Capillary bed with gradient -->
+  <defs>
+    <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.9" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main capillary -->
+  <rect x="130" y="188" width="340" height="24" rx="4" fill="url(#capGrad)" stroke="#64748b" stroke-width="2"/>
+  
+  <!-- Venule -->
+  <path d="M 470 200 L 570 200" stroke="#2563eb" stroke-width="25" fill="none" stroke-linecap="round"/>
+  <text x="520" y="180" font-family="Arial" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e3a8a">Vênula</text>
+  
+  <!-- Arterial end label -->
+  <text x="170" y="230" font-family="Arial" font-size="12" font-weight="bold" fill="#dc2626">Extremidade Arterial</text>
+  
+  <!-- Venous end label -->
+  <text x="380" y="230" font-family="Arial" font-size="12" font-weight="bold" fill="#2563eb">Extremidade Venosa</text>
+  
+  <!-- Pressure indicators - Arterial side -->
+  <g id="arterial-forces">
+    <!-- Hydrostatic pressure OUT -->
+    <path d="M 180 200 L 180 100" stroke="#dc2626" stroke-width="4" fill="none" marker-end="url(#arrowRed)"/>
+    <text x="190" y="140" font-family="Arial" font-size="14" font-weight="bold" fill="#dc2626">Pc = 35 mmHg</text>
+    <text x="190" y="156" font-family="Arial" font-size="11" fill="#7f1d1d">(Saída de fluido)</text>
+    
+    <!-- Oncotic pressure IN -->
+    <path d="M 240 270 L 240 210" stroke="#16a34a" stroke-width="3" fill="none" marker-end="url(#arrowGreen)" stroke-dasharray="4,4"/>
+    <text x="250" y="255" font-family="Arial" font-size="13" fill="#15803d">πp = 25 mmHg</text>
+  </g>
+  
+  <!-- Pressure indicators - Venous side -->
+  <g id="venous-forces">
+    <!-- Oncotic pressure IN (stronger) -->
+    <path d="M 420 270 L 420 210" stroke="#16a34a" stroke-width="4" fill="none" marker-end="url(#arrowGreen)" stroke-dasharray="4,4"/>
+    <text x="295" y="310" font-family="Arial" font-size="14" font-weight="bold" fill="#15803d">Pressão Oncótica puxa fluido DE VOLTA</text>
+    
+    <!-- Lower hydrostatic pressure -->
+    <path d="M 360 200 L 360 130" stroke="#3b82f6" stroke-width="3" fill="none" marker-end="url(#arrowBlue)"/>
+    <text x="370" y="155" font-family="Arial" font-size="13" fill="#1e40af">Pc = 15 mmHg</text>
+  </g>
+  
+  <!-- Net movement indicators -->
+  <g id="net-flow">
+    <!-- Filtration zone -->
+    <rect x="130" y="340" width="160" height="45" fill="#fef2f2" stroke="#dc2626" stroke-width="2" rx="4"/>
+    <text x="210" y="360" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#dc2626">FILTRAÇÃO</text>
+    <text x="210" y="378" font-family="Arial" font-size="12" text-anchor="middle" fill="#7f1d1d">Fluido sai para interstício</text>
+    
+    <!-- Reabsorption zone -->
+    <rect x="310" y="340" width="160" height="45" fill="#eff6ff" stroke="#2563eb" stroke-width="2" rx="4"/>
+    <text x="390" y="360" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#2563eb">REABSORÇÃO</text>
+    <text x="390" y="378" font-family="Arial" font-size="12" text-anchor="middle" fill="#1e40af">Fluido retorna ao capilar</text>
+  </g>
+  
+  <!-- Formula box -->
+  <rect x="50" y="405" width="500" height="35" fill="#f8fafc" stroke="#64748b" stroke-width="1" rx="4"/>
+  <text x="300" y="427" font-family="monospace" font-size="13" text-anchor="middle" fill="#0f172a">
+    Fluxo Net = Kf × [(Pc - Pif) - (πp - πif)]
+  </text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#16a34a"/>
+    </marker>
+  </defs>
+</svg>

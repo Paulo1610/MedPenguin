@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade - MedPenguim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px 100px;
+        }
+
+        .legal-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .legal-container .last-updated {
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            font-size: 0.95rem;
+        }
+
+        .legal-container h2 {
+            font-size: 1.4rem;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--primary-light);
+        }
+
+        .legal-container p,
+        .legal-container li {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .legal-container ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .legal-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-light);
+            text-decoration: none;
+            margin-bottom: 32px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .legal-back:hover {
+            color: var(--text-white);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="assets/img/pinguim.png" alt="MedPenguim">
+                Med Penguim
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="btn btn-outline">← Voltar</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="legal-container">
+        <a href="index.html" class="legal-back">← Voltar para Home</a>
+        <h1>Política de Privacidade</h1>
+        <p class="last-updated">Última atualização: 04 de março de 2026</p>
+
+        <h2>1. Informações que Coletamos</h2>
+        <p>Coletamos as seguintes informações quando você utiliza o MedPenguim:</p>
+        <ul>
+            <li><strong>Dados de cadastro:</strong> nome completo, e-mail e senha;</li>
+            <li><strong>Dados de pagamento:</strong> CPF e telefone (para geração de cobrança via PIX);</li>
+            <li><strong>Dados de uso:</strong> progresso em questões, flashcards e desempenho por disciplina;</li>
+            <li><strong>Dados técnicos:</strong> tipo de navegador, dispositivo e dados de acesso anônimos.</li>
+        </ul>
+
+        <h2>2. Como Usamos suas Informações</h2>
+        <p>Utilizamos suas informações para:</p>
+        <ul>
+            <li>Criar e gerenciar sua conta na plataforma;</li>
+            <li>Processar pagamentos de assinaturas Premium;</li>
+            <li>Personalizar sua experiência de estudo e acompanhar seu progresso;</li>
+            <li>Enviar comunicações sobre a plataforma (atualizações, novos conteúdos);</li>
+            <li>Melhorar nossos serviços com base em dados agregados e anonimizados.</li>
+        </ul>
+
+        <h2>3. Compartilhamento de Dados</h2>
+        <p>Não vendemos suas informações pessoais. Compartilhamos dados apenas com:</p>
+        <ul>
+            <li><strong>Mercado Pago:</strong> para processamento de pagamentos via PIX;</li>
+            <li><strong>Supabase:</strong> infraestrutura de backend e autenticação;</li>
+            <li><strong>Netlify:</strong> hospedagem da plataforma.</li>
+        </ul>
+        <p>Todos os parceiros seguem padrões adequados de segurança de dados.</p>
+
+        <h2>4. Segurança dos Dados</h2>
+        <p>Adotamos medidas técnicas para proteger suas informações, incluindo:</p>
+        <ul>
+            <li>Comunicação criptografada via HTTPS;</li>
+            <li>Autenticação segura com Supabase Auth;</li>
+            <li>Políticas de acesso restrito (Row Level Security) no banco de dados;</li>
+            <li>Senhas armazenadas com hash (nunca em texto puro).</li>
+        </ul>
+
+        <h2>5. Seus Direitos (LGPD)</h2>
+        <p>De acordo com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você tem direito a:</p>
+        <ul>
+            <li>Acessar seus dados pessoais armazenados;</li>
+            <li>Solicitar a correção de dados incompletos ou incorretos;</li>
+            <li>Solicitar a exclusão de seus dados pessoais;</li>
+            <li>Revogar o consentimento para o uso de dados;</li>
+            <li>Solicitar a portabilidade de seus dados para outro serviço.</li>
+        </ul>
+        <p>Para exercer esses direitos, entre em contato pelo e-mail abaixo.</p>
+
+        <h2>6. Cookies e Armazenamento Local</h2>
+        <p>Utilizamos localStorage do navegador para:</p>
+        <ul>
+            <li>Salvar seu progresso nas questões e flashcards;</li>
+            <li>Manter suas preferências (tema, idioma);</li>
+            <li>Gerenciar sessão de autenticação.</li>
+        </ul>
+        <p>Não utilizamos cookies de rastreamento de terceiros.</p>
+
+        <h2>7. Retenção de Dados</h2>
+        <p>Mantemos seus dados enquanto sua conta estiver ativa. Após exclusão da conta, os dados pessoais serão
+            removidos em até 30 dias, exceto quando houver obrigação legal de retenção.</p>
+
+        <h2>8. Alterações nesta Política</h2>
+        <p>Esta política pode ser atualizada periodicamente. Alterações significativas serão comunicadas por e-mail ou
+            notificação na plataforma.</p>
+
+        <h2>9. Contato</h2>
+        <p>Para dúvidas sobre privacidade ou para exercer seus direitos, entre em contato:</p>
+        <p>📧 <a href="mailto:contato@medpenguim.com" style="color: var(--primary-light);">contato@medpenguim.com</a></p>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 MedPenguim. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

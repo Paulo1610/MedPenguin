@@ -1,0 +1,463 @@
+/* 
+    MedPenguim - Calendar & Class System Styles
+    Glassmorphism Design System
+*/
+
+:root {
+    --calendar-bg: rgba(30, 41, 59, 0.7);
+    --calendar-border: rgba(255, 255, 255, 0.1);
+    --event-prova: #ef4444;
+    --event-trabalho: #f59e0b;
+    --event-revisao: #10b981;
+    --event-outro: #6366f1;
+    --event-feriado: #64748b;
+    --event-evento: #8b5cf6;
+}
+
+
+.calendar-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.calendar-card {
+    background: #1e293b; /* Solid dark background instead of glass */
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.calendar-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.calendar-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.calendar-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    min-height: 200px;
+}
+
+.calendar-grid-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 8px;
+}
+
+.calendar-day-label {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 12px;
+}
+
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 8px;
+    position: relative;
+    transition: all 0.2s;
+    min-width: 0; /* Previne grid blowout */
+    overflow: hidden;
+}
+
+.calendar-day:hover:not(.empty) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary-light);
+}
+
+.calendar-day.empty {
+    background: transparent;
+    border-color: transparent;
+    pointer-events: none;
+}
+
+.calendar-day.today {
+    border: 2px solid var(--primary);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.day-number {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.calendar-day.today .day-number {
+    color: var(--primary-light);
+}
+
+.day-events {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.event-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.event-dot.prova { background: var(--event-prova); }
+.event-dot.trabalho { background: var(--event-trabalho); }
+.event-dot.revisao { background: var(--event-revisao); }
+.event-dot.outro { background: var(--event-outro); }
+.event-dot.feriado { background: var(--event-feriado); }
+.event-dot.evento { background: var(--event-evento); }
+
+
+/* Widgets */
+.calendar-widgets {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.widget-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.upcoming-event {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 4px solid var(--primary);
+    border-radius: 4px var(--radius-md) var(--radius-md) 4px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.upcoming-event.prova { border-left-color: var(--event-prova); }
+.upcoming-event.trabalho { border-left-color: var(--event-trabalho); }
+.upcoming-event.feriado { border-left-color: var(--event-feriado); }
+.upcoming-event.evento { border-left-color: var(--event-evento); }
+
+.upcoming-event.preset {
+    background: rgba(139, 92, 246, 0.05);
+    border-right: 2px solid rgba(139, 92, 246, 0.2);
+}
+
+
+.upcoming-event h4 {
+    margin: 0 0 4px 0;
+    font-size: 0.9rem;
+}
+
+.event-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.countdown-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+    font-size: 0.7rem;
+    margin-top: 8px;
+}
+
+/* Modal Premium Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal-card {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 24px 24px 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.modal-close:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.2);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 0 24px 24px 24px;
+}
+
+.class-input {
+    width: 100%;
+    background: #0f172a; /* Azul mais profundo para contraste */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 1rem;
+    margin-top: 8px;
+    outline: none;
+    transition: all 0.2s;
+    appearance: none; /* Remove seta padrão */
+    -webkit-appearance: none;
+}
+
+/* Custom Arrow for Select */
+select.class-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+/* Style for Options inside Select */
+.class-input option {
+    background: #1e293b;
+    color: white;
+    padding: 12px;
+}
+
+.class-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+/* Remove Arrows from Number Input */
+input[type=number].class-input::-webkit-inner-spin-button, 
+input[type=number].class-input::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number].class-input {
+    -moz-appearance: textfield;
+    text-align: center;
+    font-weight: 700;
+}
+
+.btn-text {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 12px;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.btn-text:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Responsividade Mobile */
+/* Grid Preview Styles */
+.calendar-day {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 8px;
+    min-height: 80px;
+}
+
+.day-number {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    z-index: 2;
+}
+
+.event-preview {
+    width: 100%;
+    box-sizing: border-box; /* Garante que o padding não estoure a div pai */
+    font-size: 0.65rem;
+    padding: 2px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+    font-weight: 500;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.event-preview.prova { background: rgba(239, 68, 68, 0.8); border-left: 2px solid #ef4444; }
+.event-preview.trabalho { background: rgba(59, 130, 246, 0.8); border-left: 2px solid #3b82f6; }
+.event-preview.revisao { background: rgba(16, 185, 129, 0.8); border-left: 2px solid #10b981; }
+.event-preview.outro { background: rgba(107, 114, 128, 0.8); border-left: 2px solid #6b7280; }
+.event-preview.feriado { background: rgba(100, 116, 139, 0.8); border-left: 2px solid #64748b; }
+.event-preview.evento { background: rgba(139, 92, 246, 0.8); border-left: 2px solid #8b5cf6; }
+
+
+/* Details Modal Styles */
+.detail-event-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.type-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+.type-badge.prova { background: #ef4444; }
+.type-badge.trabalho { background: #3b82f6; }
+.type-badge.revisao { background: #10b981; }
+.type-badge.outro { background: #6b7280; }
+
+/* --- MOBILE OPTIMIZATIONS (768px and below) --- */
+@media (max-width: 992px) {
+    .calendar-container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        gap: 16px;
+    }
+
+    .calendar-widgets {
+        width: 100%;
+        order: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-card {
+        padding: 12px;
+        border-radius: 16px;
+    }
+
+    .calendar-header h2 {
+        font-size: 1.2rem;
+    }
+
+    /* Grid compacta no celular */
+    .calendar-day {
+        min-height: 55px;
+        height: auto;
+        aspect-ratio: auto; /* Remove aspect-ratio restriction so it doesn't overflow horizontally */
+        padding: 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .day-number {
+        font-size: 0.8rem;
+        margin-bottom: 2px;
+    }
+
+    /* Esconde o texto da prova e mostra apenas a bolinha no celular */
+    .event-preview {
+        display: none;
+    }
+
+    .day-events {
+        display: flex;
+        justify-content: center;
+        gap: 2px;
+        margin-top: 2px;
+    }
+
+    .event-dot {
+        width: 5px;
+        height: 5px;
+    }
+
+    /* Garante que os outros botões NÃO virem círculos */
+    .btn-primary:not(#btn-add-event), .btn-secondary {
+        border-radius: 12px !important;
+        height: 42px !important;
+        width: auto !important;
+        padding: 0 15px !important;
+    }
+}

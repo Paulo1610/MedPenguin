@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedPenguin E.R. Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #090a0f;
+            --monitor-bg: #11131a;
+            --neon-green: #00ff41;
+            --neon-red: #ff003c;
+            --neon-blue: #00e5ff;
+            --neon-yellow: #ffea00;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1a1c29 0%, #090a0f 100%);
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--monitor-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 50px rgba(0, 229, 255, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .score-board {
+            display: flex;
+            gap: 20px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .score-board div {
+            background: var(--glass-bg);
+            padding: 5px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .vital-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .vital-box.hr { color: var(--neon-green); }
+        .vital-box.bp { color: var(--neon-red); }
+        .vital-box.spo2 { color: var(--neon-blue); }
+        .vital-box.temp { color: var(--neon-yellow); }
+
+        .vital-label {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .vital-value {
+            font-size: 36px;
+            font-weight: 700;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        /* EKG Canvas */
+        .ekg-container {
+            width: 100%;
+            height: 100px;
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #ekgCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Clinical Case */
+        .case-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--neon-blue);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.5;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Actions */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .action-btn {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Specific Button Colors */
+        .action-btn[data-action="Adrenalina"] { border-color: var(--neon-red); }
+        .action-btn[data-action="Desfibrilar"] { border-color: var(--neon-yellow); }
+        .action-btn[data-action="Oxigênio"] { border-color: var(--neon-blue); }
+
+        /* Timer Bar */
+        .timer-container {
+            width: 100%;
+            height: 10px;
+            background: var(--glass-bg);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: var(--neon-green);
+            width: 100%;
+            transition: width 0.1s linear, background-color 0.3s ease;
+        }
+
+        /* Overlay Screens */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(9, 10, 15, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+
+        .overlay h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px currentColor;
+        }
+
+        .overlay p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .start-btn {
+            background: var(--neon-blue);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .back-btn:hover { color: white; }
+
+        /* Shake animation for critical moments */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .critical-shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            animation-iteration-count: infinite;
+            border-color: var(--neon-red) !important;
+            box-shadow: 0 0 30px rgba(255,0,60,0.3) !important;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+                padding: 10px;
+                box-sizing: border-box;
+                display: block;
+            }
+
+            .game-container {
+                padding: 15px;
+                gap: 15px;
+                margin-top: 50px;
+                box-sizing: border-box;
+            }
+
+            .header h1 {
+                font-size: 16px;
+            }
+
+            .score-board {
+                font-size: 12px;
+                gap: 10px;
+            }
+
+            .monitor-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .vital-value {
+                font-size: 28px;
+            }
+
+            .case-box {
+                font-size: 15px;
+                padding: 15px;
+                min-height: 120px;
+            }
+
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .action-btn {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .overlay h2 {
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .overlay p {
+                font-size: 16px;
+                padding: 0 20px;
+            }
+
+            .start-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+
+            .back-btn {
+                top: 15px;
+                left: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .ekg-container {
+                height: 80px;
+            }
+
+            .vital-label {
+                font-size: 10px;
+            }
+
+            .vital-value {
+                font-size: 24px;
+            }
+        }
+
+        /* Support for very small screens */
+        @media (max-width: 380px) {
+            .monitor-grid {
+                grid-template-columns: 1fr;
+            }
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← Voltar à Central</a>
+
+    <div class="game-container" id="gameBox">
+        
+        <!-- Screens -->
+        <div id="startScreen" class="overlay">
+            <h2 style="color: var(--neon-blue);">E.R. SIMULATOR</h2>
+            <p>Bem-vindo ao Plantão, Doutor. Vidas dependem da sua velocidade de raciocínio farmacológico e clínico. Diagnostique rápido. Aja mais rápido ainda.</p>
+            <button class="start-btn" onclick="startGame()">INICIAR PLANTÃO</button>
+        </div>
+
+        <div id="gameOverScreen" class="overlay hidden">
+            <h2 id="endTitle" style="color: var(--neon-red);">ÓBITO</h2>
+            <p id="endMessage">O paciente não resistiu. Você falhou na prescrição.</p>
+            <button class="start-btn" onclick="startGame()">TENTAR NOVAMENTE</button>
+        </div>
+
+        <!-- Game UI -->
+        <div class="header">
+            <h1>SALA DE EMERGÊNCIA 01</h1>
+            <div class="score-board">
+                <div>PACIENTES SALVOS: <span id="scoreDisplay" style="color: var(--neon-green)">0</span></div>
+            </div>
+        </div>
+
+        <div class="monitor-grid">
+            <div class="vital-box hr">
+                <div class="vital-label">BPM</div>
+                <div class="vital-value" id="val-hr">--</div>
+            </div>
+            <div class="vital-box bp">
+                <div class="vital-label">P.A. (mmHg)</div>
+                <div class="vital-value" id="val-bp">--/--</div>
+            </div>
+            <div class="vital-box spo2">
+                <div class="vital-label">SpO2 %</div>
+                <div class="vital-value" id="val-spo2">--</div>
+            </div>
+            <div class="vital-box temp">
+                <div class="vital-label">TEMP °C</div>
+                <div class="vital-value" id="val-temp">--</div>
+            </div>
+        </div>
+
+        <div class="ekg-container">
+            <canvas id="ekgCanvas"></canvas>
+        </div>
+
+        <div class="case-box" id="caseText">
+            Aguardando chegada da ambulância...
+        </div>
+
+        <div class="timer-container">
+            <div class="timer-fill" id="timerBar"></div>
+        </div>
+
+        <div class="action-grid" id="actionGrid">
+            <!-- Botões injetados via JS -->
+        </div>
+
+    </div>
+
+    <script>
+        // Game Database
+        const cases = [
+            {
+                id: 1,
+                text: "Paciente de 25 anos chega à emergência após ser picado por abelha. Apresenta edema de glote severo, estridor laríngeo, placas vermelhas pelo corpo (urticária) e hipotensão brutal.",
+                hr: 135, bp: "70/40", spo2: 88, temp: 36.5, rhythm: "sinus_tachy",
+                correctAction: "Adrenalina IM",
+                timeLimit: 15,
+                actions: ["Adrenalina IM", "Furosemida IV", "Desfibrilar", "Aspirina", "Atropina IV", "Soro Fisiológico"]
+            },
+            {
+                id: 2,
+                text: "Senhor de 68 anos trazido pelo resgate. Relata dor em peso no peito irradiando para mandíbula há 40 minutos. Sudoreico, pálido. ECG mostra Supra de ST em V1-V4 (Infarto Anterior Mestre).",
+                hr: 110, bp: "150/90", spo2: 94, temp: 36.2, rhythm: "st_elevation",
+                correctAction: "AAS + Clopidogrel",
+                timeLimit: 20,
+                actions: ["AAS + Clopidogrel", "Adrenalina IM", "Salbutamol inalatório", "Desfibrilar", "Atropina IV", "Gluconato de Cálcio"]
+            },
+            {
+                id: 3,
+                text: "Paciente de 75 anos, hipertenso crônico, chega tossindo secreção rósea espumosa, dispneia absurda e estertores crepitantes até o ápice pulmonar. O pulmão está afogado em líquido.",
+                hr: 125, bp: "220/120", spo2: 82, temp: 36.8, rhythm: "sinus_tachy",
+                correctAction: "Furosemida IV + VNI",
+                timeLimit: 15,
+                actions: ["AAS + Clopidogrel", "Desfibrilar", "Adrenalina IM", "Furosemida IV + VNI", "Soro Fisiológico em bólus", "Atropina IV"]
+            },
+            {
+                id: 4,
+                text: "Lavrador de 40 anos chega trazido por colegas. Tomou banho de agrotóxico (Organofosforado). Está salivando muito, pupilas puntiformes (miose), chorando, defecando e com bradicardia intensa.",
+                hr: 35, bp: "90/60", spo2: 90, temp: 36.0, rhythm: "brady",
+                correctAction: "Atropina IV",
+                timeLimit: 15,
+                actions: ["Adrenalina IM", "Amiodarona IV", "Desfibrilar", "Atropina IV", "Insulina Rápida", "Massagem Cardíaca"]
+            },
+            {
+                id: 5,
+                text: "Jovem cai no chão subitamente na sala de espera. Ausência de pulso central. Monitor indica uma linha serrilhada caótica e desorganizada sem complexo QRS identificável (Fibrilação Ventricular).",
+                hr: "0", bp: "0/0", spo2: "0", temp: 36.5, rhythm: "vfib",
+                correctAction: "Desfibrilar",
+                timeLimit: 10,
+                actions: ["AAS + Clopidogrel", "Soro Fisiológico", "Desfibrilar", "Atropina IV", "Furosemida IV", "Lidocaína"]
+            }
+        ];
+
+        // EKG System
+        const canvas = document.getElementById('ekgCanvas');
+        const ctx = canvas.getContext('2d');
+        let ekgX = 0;
+        let ekgSpeed = 2;
+        let ekgYOffset = canvas.height / 2;
+        let currentPattern = [];
+        let patternIndex = 0;
+        let animationId;
+        
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            ekgYOffset = canvas.height / 2;
+            ctx.fillStyle = "rgba(0, 255, 65, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const patterns = {
+            normal: [0, 0, 0, 0, -5, 10, 0, 0, 0, 0, 0, 0, -5, -10, 40, -15, 0, 0, 0, 0, 0, -8, -12, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            sinus_tachy: [0, 0, -5, 10, 0, 0, -5, -10, 40, -15, 0, 0, -8, -12, -8, 0, 0, 0],
+            brady: [0, 0, 0, 0, 0, 0, -5, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5, -10, 40, -15, 0, 0, 0, 0, 0, 0, 0, 0, -8, -12, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            vfib: [-10, 20, -30, 15, -5, 10, -25, 30, -10, 5, -20, 25, -15, 35, -5, 10, -10, 5],
+            st_elevation: [0, 0, 0, -5, 10, 0, -5, -10, 40, -5, 20, 18, 15, 10, 5, 0, 0, 0, 0, 0, 0] // ST segment raised
+        };
+
+        function setRhythm(type) {
+            currentPattern = patterns[type] || patterns.normal;
+            patternIndex = 0;
+        }
+
+        function drawEKG() {
+            ctx.fillStyle = "rgba(17, 19, 26, 0.1)"; // Fade effect
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Eraser bar
+            ctx.clearRect(ekgX, 0, 20, canvas.height);
+
+            ctx.beginPath();
+            ctx.strokeStyle = "#00ff41";
+            ctx.lineWidth = 2;
+            ctx.moveTo(ekgX, ekgYOffset);
+
+            let val = currentPattern[patternIndex];
+            // Add some noise to VFib
+            if (currentPattern === patterns.vfib) val += (Math.random() * 10 - 5);
+
+            let y = ekgYOffset - val;
+            
+            ctx.lineTo(ekgX + ekgSpeed, y);
+            ctx.stroke();
+
+            ekgX += ekgSpeed;
+            patternIndex++;
+            if (patternIndex >= currentPattern.length) patternIndex = 0;
+
+            if (ekgX >= canvas.width) {
+                ekgX = 0;
+            }
+
+            animationId = requestAnimationFrame(drawEKG);
+        }
+
+        // Game State
+        let currentCase = null;
+        let score = 0;
+        let timerInterval;
+        let timeLeft = 0;
+        let maxTime = 0;
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function startGame() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('gameBox').classList.remove('critical-shake');
+            score = 0;
+            updateScore();
+            loadNextCase();
+            if(!animationId) drawEKG();
+        }
+
+        function loadNextCase() {
+            // Pick a random case
+            currentCase = cases[Math.floor(Math.random() * cases.length)];
+            
+            // Update UI
+            document.getElementById('caseText').innerHTML = `<strong>ENTRADA:</strong> ${currentCase.text}`;
+            document.getElementById('val-hr').innerText = currentCase.hr;
+            document.getElementById('val-bp').innerText = currentCase.bp;
+            document.getElementById('val-spo2').innerText = currentCase.spo2;
+            document.getElementById('val-temp').innerText = currentCase.temp;
+
+            // Heartbeat speed simulation based on HR
+            if(currentCase.hr > 120) ekgSpeed = 4;
+            else if (currentCase.hr < 50) ekgSpeed = 1.5;
+            else ekgSpeed = 2.5;
+
+            setRhythm(currentCase.rhythm);
+
+            // Generate Action Buttons
+            const grid = document.getElementById('actionGrid');
+            grid.innerHTML = '';
+            
+            let actions = shuffle([...currentCase.actions]);
+            // Ensure we only show 6
+            actions = actions.slice(0, 6);
+            if(!actions.includes(currentCase.correctAction)) {
+                actions[0] = currentCase.correctAction;
+                actions = shuffle(actions);
+            }
+
+            actions.forEach(action => {
+                const btn = document.createElement('button');
+                btn.className = 'action-btn';
+                btn.dataset.action = action;
+                btn.innerText = action;
+                btn.onclick = () => handleAction(action);
+                grid.appendChild(btn);
+            });
+
+            // Start Timer
+            maxTime = currentCase.timeLimit;
+            timeLeft = maxTime;
+            document.getElementById('gameBox').classList.remove('critical-shake');
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            const bar = document.getElementById('timerBar');
+            bar.style.width = '100%';
+            bar.style.backgroundColor = 'var(--neon-green)';
+
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.1;
+                const pct = (timeLeft / maxTime) * 100;
+                bar.style.width = `${pct}%`;
+
+                if (pct < 40) {
+                    bar.style.backgroundColor = 'var(--neon-yellow)';
+                }
+                if (pct < 15) {
+                    bar.style.backgroundColor = 'var(--neon-red)';
+                    document.getElementById('gameBox').classList.add('critical-shake');
+                }
+
+                if (timeLeft <= 0) {
+                    endGame(false, "TEMPO ESGOTADO. O paciente teve morte encefálica por demora no tratamento.");
+                }
+            }, 100);
+        }
+
+        function handleAction(selectedAction) {
+            clearInterval(timerInterval);
+            if (selectedAction === currentCase.correctAction) {
+                // Success
+                score++;
+                updateScore();
+                document.getElementById('gameBox').classList.remove('critical-shake');
+                
+                // Visual feedback of stabilization
+                setRhythm('normal');
+                document.getElementById('val-hr').innerText = "85";
+                document.getElementById('val-bp').innerText = "120/80";
+                document.getElementById('val-spo2').innerText = "98";
+                document.getElementById('caseText').innerHTML = `<span style="color:var(--neon-green)"><strong>ESTÁVEL:</strong> Procedimento correto! Paciente salvo e estabilizado. Preparando próximo paciente...</span>`;
+                document.getElementById('actionGrid').innerHTML = ''; // Clear buttons
+                
+                setTimeout(loadNextCase, 2500);
+            } else {
+                // Failure
+                endGame(false, `Erro médico. A droga escolhida piorou o quadro clínico fatalmente. Tratamento correto era: ${currentCase.correctAction}`);
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('scoreDisplay').innerText = score;
+        }
+
+        function endGame(victory, message) {
+            clearInterval(timerInterval);
+            document.getElementById('gameBox').classList.remove('critical-shake');
+            const screen = document.getElementById('gameOverScreen');
+            const title = document.getElementById('endTitle');
+            const msg = document.getElementById('endMessage');
+
+            screen.classList.remove('hidden');
+            setRhythm('normal'); // Flatline visually maybe?
+            currentPattern = [0,0,0,0,0,0,0,0,0]; // Flatline
+
+            if (victory) {
+                title.innerText = "PLANTÃO FINALIZADO";
+                title.style.color = "var(--neon-green)";
+            } else {
+                title.innerText = "ÓBITO";
+                title.style.color = "var(--neon-red)";
+                document.getElementById('val-hr').innerText = "0";
+                document.getElementById('val-bp').innerText = "0/0";
+                document.getElementById('val-spo2').innerText = "0";
+            }
+            msg.innerText = message + `\n\nPacientes Salvos neste turno: ${score}`;
+        }
+    </script>
+</body>
+</html>
